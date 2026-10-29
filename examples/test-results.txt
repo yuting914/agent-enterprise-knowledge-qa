@@ -1,0 +1,21 @@
+$ python -m unittest discover -s tests -v
+test_conflicting_documents_are_both_retrieved (test_agent.AgentTests.test_conflicting_documents_are_both_retrieved) ... ok
+test_context_follow_up_selects_approval_passage (test_agent.AgentTests.test_context_follow_up_selects_approval_passage) ... ok
+test_document_change_changes_answer (test_agent.AgentTests.test_document_change_changes_answer) ... ok
+test_document_change_changes_decision (test_agent.AgentTests.test_document_change_changes_decision) ... ok
+test_empty_clarification_is_rejected (test_agent.AgentTests.test_empty_clarification_is_rejected) ... ok
+test_mock_conflict_does_not_pick_a_deadline (test_agent.AgentTests.test_mock_conflict_does_not_pick_a_deadline) ... ok
+test_out_of_scope_has_no_evidence (test_agent.AgentTests.test_out_of_scope_has_no_evidence) ... ok
+test_paraphrase_retrieval (test_agent.AgentTests.test_paraphrase_retrieval) ... ok
+test_step_limit_cannot_be_disabled (test_agent.AgentTests.test_step_limit_cannot_be_disabled) ... ok
+test_step_limit_is_explicit (test_agent.AgentTests.test_step_limit_is_explicit) ... ok
+test_terminal_decision_before_search_is_rejected (test_agent.AgentTests.test_terminal_decision_before_search_is_rejected) ... ok
+test_tool_failure_becomes_observation (test_agent.AgentTests.test_tool_failure_becomes_observation) ... ok
+test_unsupported_quote_is_rejected (test_agent.AgentTests.test_unsupported_quote_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.016s
+
+OK
+
+exit_code=0

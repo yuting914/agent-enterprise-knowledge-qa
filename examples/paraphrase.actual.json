@@ -1,0 +1,79 @@
+{
+  "status": "answered",
+  "answer": "忘记企业账号密码时，可在统一身份门户点击“忘记密码”，完成手机验证码校验后设置新密码。",
+  "citations": [
+    {
+      "doc_id": "D03",
+      "version_date": "2026-03-01",
+      "quote": "忘记企业账号密码时，员工可在统一身份门户点击“忘记密码”，完成手机验证码校验后设置新密码。"
+    }
+  ],
+  "gaps": [],
+  "trace": [
+    {
+      "step": 1,
+      "action": "search_documents",
+      "arguments": {
+        "query": "登录口令忘了怎么处理"
+      },
+      "reason": "先检索与登录口令忘记处理相关的文档。",
+      "observation": {
+        "result": [
+          {
+            "doc_id": "D03",
+            "title": "企业账号密码 FAQ",
+            "version_date": "2026-03-01",
+            "scope": "全体员工",
+            "score": 15
+          }
+        ]
+      },
+      "next_action": "read_excerpt"
+    },
+    {
+      "step": 2,
+      "action": "read_excerpt",
+      "arguments": {
+        "doc_id": "D03"
+      },
+      "reason": "检索到文档 D03《企业账号密码 FAQ》，需先读取原文后才能回答忘记口令的处理流程。",
+      "observation": {
+        "result": {
+          "doc_id": "D03",
+          "title": "企业账号密码 FAQ",
+          "version_date": "2026-03-01",
+          "scope": "全体员工",
+          "passages": [
+            {
+              "id": "D03-P1",
+              "text": "忘记企业账号密码时，员工可在统一身份门户点击“忘记密码”，完成手机验证码校验后设置新密码。"
+            }
+          ]
+        }
+      },
+      "next_action": "finish"
+    },
+    {
+      "step": 3,
+      "action": "finish",
+      "arguments": {
+        "doc_id": "D03"
+      },
+      "reason": "已读取 D03 原文，其中明确说明了忘记密码后的处理流程，可直接回答。",
+      "observation": {
+        "status": "answered"
+      },
+      "next_action": "end"
+    }
+  ],
+  "run_info": {
+    "backend": "claude",
+    "model": "haiku",
+    "cli_version": "2.1.137 (Claude Code)",
+    "actual_models": [
+      "deepseek-v4-pro"
+    ],
+    "max_steps": 8,
+    "injected_failure": null
+  }
+}

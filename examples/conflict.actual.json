@@ -1,0 +1,17 @@
+{
+  "status": "model_error",
+  "answer": "模型入口失败，任务未完成。",
+  "citations": [],
+  "gaps": [
+    "Claude CLI decision failed: subtype=success, is_error=True, denials=[], exit=1, reason=completed, message=API Error: 402 Insufficient Balance (request_id: f04c3934-f175-489d-b777-37555e53fa9f)"
+  ],
+  "trace": [],
+  "run_info": {
+    "backend": "claude",
+    "model": "haiku",
+    "cli_version": "2.1.137 (Claude Code)",
+    "actual_models": [],
+    "max_steps": 8,
+    "injected_failure": null
+  }
+}

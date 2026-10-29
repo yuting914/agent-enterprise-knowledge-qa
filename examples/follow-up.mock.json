@@ -1,0 +1,79 @@
+{
+  "status": "answered",
+  "answer": "VPN 开通申请须由直属主管审批，IT 服务台在审批通过后开通。",
+  "citations": [
+    {
+      "doc_id": "D04",
+      "version_date": "2026-04-12",
+      "quote": "VPN 开通申请须由直属主管审批，IT 服务台在审批通过后开通。"
+    }
+  ],
+  "gaps": [],
+  "trace": [
+    {
+      "step": 1,
+      "action": "search_documents",
+      "arguments": {
+        "query": "谁审批这个申请？"
+      },
+      "reason": "离线规则演示流程",
+      "observation": {
+        "result": [
+          {
+            "doc_id": "D04",
+            "title": "远程办公 VPN 申请 FAQ",
+            "version_date": "2026-04-12",
+            "scope": "全体员工",
+            "score": 14
+          }
+        ]
+      },
+      "next_action": "read_excerpt"
+    },
+    {
+      "step": 2,
+      "action": "read_excerpt",
+      "arguments": {
+        "doc_id": "D04"
+      },
+      "reason": "离线规则演示流程",
+      "observation": {
+        "result": {
+          "doc_id": "D04",
+          "title": "远程办公 VPN 申请 FAQ",
+          "version_date": "2026-04-12",
+          "scope": "全体员工",
+          "passages": [
+            {
+              "id": "D04-P1",
+              "text": "需要远程办公访问时，员工应在 IT 服务台提交 VPN 开通申请。"
+            },
+            {
+              "id": "D04-P2",
+              "text": "VPN 开通申请须由直属主管审批，IT 服务台在审批通过后开通。"
+            }
+          ]
+        }
+      },
+      "next_action": "finish"
+    },
+    {
+      "step": 3,
+      "action": "finish",
+      "arguments": {},
+      "reason": "离线规则演示流程",
+      "observation": {
+        "status": "answered"
+      },
+      "next_action": "end"
+    }
+  ],
+  "run_info": {
+    "backend": "mock",
+    "model": "offline-mock",
+    "cli_version": "none",
+    "actual_models": [],
+    "max_steps": 8,
+    "injected_failure": null
+  }
+}

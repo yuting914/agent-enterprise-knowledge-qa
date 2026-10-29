@@ -1,0 +1,77 @@
+{
+  "status": "answered",
+  "answer": "忘记企业账号密码时，员工可在统一身份门户点击“忘记密码”，完成手机验证码校验后设置新密码。",
+  "citations": [
+    {
+      "doc_id": "D03",
+      "version_date": "2026-03-01",
+      "quote": "忘记企业账号密码时，员工可在统一身份门户点击“忘记密码”，完成手机验证码校验后设置新密码。"
+    }
+  ],
+  "gaps": [],
+  "trace": [
+    {
+      "step": 1,
+      "action": "search_documents",
+      "arguments": {
+        "query": "企业账号密码忘记 找回 重置"
+      },
+      "reason": "用户询问企业账号忘记密码的处理方式，需先检索相关制度文档。",
+      "observation": {
+        "result": [
+          {
+            "doc_id": "D03",
+            "title": "企业账号密码 FAQ",
+            "version_date": "2026-03-01",
+            "scope": "全体员工",
+            "score": 31
+          }
+        ]
+      },
+      "next_action": "read_excerpt"
+    },
+    {
+      "step": 2,
+      "action": "read_excerpt",
+      "arguments": {
+        "doc_id": "D03"
+      },
+      "reason": "必须读取 D03 原文后方可回答制度事实问题。",
+      "observation": {
+        "result": {
+          "doc_id": "D03",
+          "title": "企业账号密码 FAQ",
+          "version_date": "2026-03-01",
+          "scope": "全体员工",
+          "passages": [
+            {
+              "id": "D03-P1",
+              "text": "忘记企业账号密码时，员工可在统一身份门户点击“忘记密码”，完成手机验证码校验后设置新密码。"
+            }
+          ]
+        }
+      },
+      "next_action": "finish"
+    },
+    {
+      "step": 3,
+      "action": "finish",
+      "arguments": {},
+      "reason": "已读取 D03 原文，其中明确给出密码忘记时的找回步骤，可直接作答。",
+      "observation": {
+        "status": "answered"
+      },
+      "next_action": "end"
+    }
+  ],
+  "run_info": {
+    "backend": "claude",
+    "model": "haiku",
+    "cli_version": "2.1.137 (Claude Code)",
+    "actual_models": [
+      "deepseek-v4-pro"
+    ],
+    "max_steps": 8,
+    "injected_failure": null
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "status": "insufficient_evidence",
+  "answer": "现有资料没有回答这个问题。",
+  "citations": [],
+  "gaps": [
+    "未检索到相关制度或 FAQ"
+  ],
+  "trace": [
+    {
+      "step": 1,
+      "action": "search_documents",
+      "arguments": {
+        "query": "食堂今天有什么菜？"
+      },
+      "reason": "离线规则演示流程",
+      "observation": {
+        "result": []
+      },
+      "next_action": "finish"
+    },
+    {
+      "step": 2,
+      "action": "finish",
+      "arguments": {},
+      "reason": "离线规则演示流程",
+      "observation": {
+        "status": "insufficient_evidence"
+      },
+      "next_action": "end"
+    }
+  ],
+  "run_info": {
+    "backend": "mock",
+    "model": "offline-mock",
+    "cli_version": "none",
+    "actual_models": [],
+    "max_steps": 8,
+    "injected_failure": null
+  }
+}

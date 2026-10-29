@@ -1,0 +1,40 @@
+{
+  "status": "tool_error",
+  "answer": "工具失败，无法取得可靠资料。",
+  "citations": [],
+  "gaps": [
+    "工具不可用"
+  ],
+  "trace": [
+    {
+      "step": 1,
+      "action": "search_documents",
+      "arguments": {
+        "query": "忘记密码怎么办？"
+      },
+      "reason": "离线规则演示流程",
+      "observation": {
+        "error": "injected search_documents failure"
+      },
+      "next_action": "finish"
+    },
+    {
+      "step": 2,
+      "action": "finish",
+      "arguments": {},
+      "reason": "离线规则演示流程",
+      "observation": {
+        "status": "tool_error"
+      },
+      "next_action": "end"
+    }
+  ],
+  "run_info": {
+    "backend": "mock",
+    "model": "offline-mock",
+    "cli_version": "none",
+    "actual_models": [],
+    "max_steps": 8,
+    "injected_failure": "search_documents"
+  }
+}
