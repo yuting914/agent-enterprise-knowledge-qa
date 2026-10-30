@@ -11,6 +11,7 @@ from src.tools import KnowledgeBase
 
 
 DATA = Path(__file__).resolve().parents[1] / "data" / "documents.json"
+D01_ONLY = DATA.parent / "documents-d01-only.json"
 
 
 class FixedModel:
@@ -42,6 +43,14 @@ class AgentTests(unittest.TestCase):
         result = KnowledgeAgent(self.kb, MockDecisionModel()).run("报销期限多久？")
         self.assertEqual(result["status"], "needs_clarification")
         self.assertEqual({item["doc_id"] for item in result["citations"]}, {"D01", "D02"})
+
+    def test_only_d01_supports_a_direct_answer(self):
+        kb = KnowledgeBase(D01_ONLY)
+        self.assertEqual([item["doc_id"] for item in kb.search_documents("报销期限多久？")], ["D01"])
+        result = KnowledgeAgent(kb, MockDecisionModel()).run("报销期限多久？")
+        self.assertEqual(result["status"], "answered")
+        self.assertEqual([item["doc_id"] for item in result["citations"]], ["D01"])
+        self.assertIn("30 天", result["answer"])
 
     def test_tool_failure_becomes_observation(self):
         result = KnowledgeAgent(self.kb, MockDecisionModel(), fail_tool="search_documents").run("忘记密码怎么办？")

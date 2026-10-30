@@ -1,6 +1,6 @@
 # 企业知识问答 Agent
 
-题目：企业知识问答 Agent。员工输入制度或产品问题，CLI 在合成资料中检索并读取原文，返回答案、引用、资料缺口与状态。
+题目：企业知识问答 Agent（原题未提供数字题号）。员工输入制度或产品问题，CLI 在合成资料中检索并读取原文，返回答案、引用、资料缺口与状态。
 
 ## 评审入口
 
@@ -9,7 +9,7 @@
 - [实际运行与限制](docs/03-evaluation.md)
 - [AI 使用记录](docs/04-ai-usage.md)
 - [复盘](docs/05-retrospective.md)
-- [`examples/`](examples/)：六组输入、真实模型运行记录和离线 Mock 记录；文件名后缀明确区分 `actual` 与 `mock`
+- [`examples/`](examples/)：六组必验输入及一组 D01 单文档变体，均有真实模型和离线 Mock 运行记录；文件名后缀区分 `actual` 与 `mock`
 - [`tests/`](tests/)：可执行单元测试
 
 ## 环境与安装
@@ -24,6 +24,7 @@
 python -m src.cli --input examples/clear.input.json --backend mock
 python -m src.cli --input examples/conflict.input.json --backend mock
 python -m src.cli --input examples/clear.input.json --backend claude --output examples/my-run.json
+python -m src.cli --data data/documents-d01-only.json --input examples/d01-only.input.json --backend claude --output examples/my-d01-run.json
 python -m unittest discover -s tests -v
 ```
 
@@ -41,4 +42,4 @@ python -m src.cli --question "企业账号密码忘了怎么办？" --backend mo
 
 输出 JSON 含 `answer`、`citations`（文档 ID、版本日期、逐字片段）、`gaps`、`status`、`trace` 和 `run_info`。Trace 每步记录动作、参数、工具观察、下一动作及简短公开依据。状态包括 `answered`、`needs_clarification`、`insufficient_evidence`、`tool_error`、`incomplete_limit` 和 `model_error`。
 
-真实模型每一步只生成一个结构化动作；Python 执行业务工具并把结果送回模型。程序会拒绝未读取文档的引用、非逐字引用、未检索就结束、空白追问。默认最多执行 8 步，可配置值强制限定在 1–20；达到上限明确返回 `incomplete_limit`。离线 Mock 是确定性规则，仅用于验证流程，不能证明真实模型的 ReAct 决策能力。六组真实模型运行结果及限制见评估文档。
+真实模型每一步只生成一个结构化动作；Python 执行业务工具并把结果送回模型。程序会拒绝未读取文档的引用、非逐字引用、未检索就结束、空白追问。默认最多执行 8 步，可配置值强制限定在 1–20；达到上限明确返回 `incomplete_limit`。离线 Mock 是确定性规则，仅用于验证流程，不能证明真实模型的 ReAct 决策能力。七组真实模型运行结果及限制见评估文档。

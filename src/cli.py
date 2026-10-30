@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -36,7 +37,9 @@ def main() -> None:
     result = KnowledgeAgent(kb, model, max_steps=max_steps, fail_tool=fail_tool).run(question, history)
     result["run_info"] = {"backend": args.backend, "model": model.model, "cli_version": model.cli_version,
                           "actual_models": sorted(getattr(model, "actual_models", [])),
-                          "max_steps": max_steps, "injected_failure": fail_tool}
+                          "max_steps": max_steps, "injected_failure": fail_tool,
+                          "data_name": args.data.name,
+                          "data_sha256": hashlib.sha256(args.data.read_bytes()).hexdigest()}
     text = json.dumps(result, ensure_ascii=False, indent=2) + "\n"
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

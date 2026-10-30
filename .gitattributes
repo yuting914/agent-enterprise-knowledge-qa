@@ -1,5 +1,1 @@
-* text=auto
-*.py text eol=lf
-*.json text eol=lf
-*.md text eol=lf
-*.txt text eol=lf
+data/documents-d01-only.json -text whitespace=cr-at-eol

@@ -1,6 +1,7 @@
 """Check committed real-model evidence without spending model credits."""
 
 import json
+import hashlib
 import unittest
 from pathlib import Path
 
@@ -16,7 +17,7 @@ def load(name: str) -> dict:
 
 class SavedTraceTests(unittest.TestCase):
     def test_all_citations_are_exact_passages(self):
-        for name in ("clear", "conflict", "out-of-scope", "paraphrase", "follow-up", "tool-failure"):
+        for name in ("clear", "conflict", "out-of-scope", "paraphrase", "follow-up", "tool-failure", "d01-only"):
             with self.subTest(name=name):
                 run = load(name)
                 self.assertEqual(run["run_info"]["backend"], "claude")
@@ -32,6 +33,16 @@ class SavedTraceTests(unittest.TestCase):
         self.assertTrue(all(part in run["answer"] for part in ("D01", "D02", "30 天", "15 天", "请")))
         self.assertEqual([row["action"] for row in run["trace"]],
                          ["search_documents", "read_excerpt", "read_excerpt", "ask_clarification"])
+
+    def test_d01_only_trace_changes_to_direct_answer(self):
+        run = load("d01-only")
+        self.assertEqual(run["status"], "answered")
+        self.assertEqual([c["doc_id"] for c in run["citations"]], ["D01"])
+        self.assertIn("30 天", run["answer"])
+        self.assertEqual([row["action"] for row in run["trace"]],
+                         ["search_documents", "read_excerpt", "finish"])
+        data = ROOT / "data" / "documents-d01-only.json"
+        self.assertEqual(run["run_info"]["data_sha256"], hashlib.sha256(data.read_bytes()).hexdigest())
 
     def test_out_of_scope_trace_ends_without_fabricated_citation(self):
         run = load("out-of-scope")
@@ -49,6 +60,9 @@ class SavedTraceTests(unittest.TestCase):
                 self.assertIn(doc_id, {c["doc_id"] for c in run["citations"]})
                 self.assertIn("read_excerpt", [row["action"] for row in run["trace"]])
         self.assertIn("直属主管", load("follow-up")["answer"])
+        follow_up_queries = [row["arguments"].get("query", "") for row in load("follow-up")["trace"]
+                             if row["action"] == "search_documents"]
+        self.assertTrue(any("VPN" in query for query in follow_up_queries))
 
     def test_failure_trace_shows_observation_and_safe_stop(self):
         run = load("tool-failure")
