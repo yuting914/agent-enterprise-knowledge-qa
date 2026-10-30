@@ -5,6 +5,8 @@ test_document_change_changes_answer (test_agent.AgentTests.test_document_change_
 test_document_change_changes_decision (test_agent.AgentTests.test_document_change_changes_decision) ... ok
 test_empty_clarification_is_rejected (test_agent.AgentTests.test_empty_clarification_is_rejected) ... ok
 test_mock_conflict_does_not_pick_a_deadline (test_agent.AgentTests.test_mock_conflict_does_not_pick_a_deadline) ... ok
+test_model_api_error_does_not_echo_question (test_agent.AgentTests.test_model_api_error_does_not_echo_question) ... ok
+test_model_timeout_does_not_echo_question (test_agent.AgentTests.test_model_timeout_does_not_echo_question) ... ok
 test_out_of_scope_has_no_evidence (test_agent.AgentTests.test_out_of_scope_has_no_evidence) ... ok
 test_paraphrase_retrieval (test_agent.AgentTests.test_paraphrase_retrieval) ... ok
 test_step_limit_cannot_be_disabled (test_agent.AgentTests.test_step_limit_cannot_be_disabled) ... ok
@@ -12,9 +14,14 @@ test_step_limit_is_explicit (test_agent.AgentTests.test_step_limit_is_explicit) 
 test_terminal_decision_before_search_is_rejected (test_agent.AgentTests.test_terminal_decision_before_search_is_rejected) ... ok
 test_tool_failure_becomes_observation (test_agent.AgentTests.test_tool_failure_becomes_observation) ... ok
 test_unsupported_quote_is_rejected (test_agent.AgentTests.test_unsupported_quote_is_rejected) ... ok
+test_all_citations_are_exact_passages (test_saved_traces.SavedTraceTests.test_all_citations_are_exact_passages) ... ok
+test_clear_paraphrase_and_follow_up_have_supported_answers (test_saved_traces.SavedTraceTests.test_clear_paraphrase_and_follow_up_have_supported_answers) ... ok
+test_conflict_trace_shows_both_documents_and_clarification (test_saved_traces.SavedTraceTests.test_conflict_trace_shows_both_documents_and_clarification) ... ok
+test_failure_trace_shows_observation_and_safe_stop (test_saved_traces.SavedTraceTests.test_failure_trace_shows_observation_and_safe_stop) ... ok
+test_out_of_scope_trace_ends_without_fabricated_citation (test_saved_traces.SavedTraceTests.test_out_of_scope_trace_ends_without_fabricated_citation) ... ok
 
 ----------------------------------------------------------------------
-Ran 13 tests in 0.016s
+Ran 20 tests in 0.014s
 
 OK
 

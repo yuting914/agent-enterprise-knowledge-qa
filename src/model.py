@@ -47,7 +47,7 @@ reason 只写一句可公开的证据依据，不写内部推理过程。无关�
 class ClaudeDecisionModel:
     """Use a logged-in Claude CLI with all built-in and MCP tools disabled."""
 
-    def __init__(self, model: str = "haiku", timeout: int = 60):
+    def __init__(self, model: str = "haiku", timeout: int = 120):
         self.model = model
         self.timeout = timeout
         self.cli_version = subprocess.run(
@@ -63,26 +63,27 @@ class ClaudeDecisionModel:
             "--output-format", "json", "--json-schema", json.dumps(ACTION_SCHEMA), prompt,
         ]
         with tempfile.TemporaryDirectory(prefix="qa-claude-", ignore_cleanup_errors=True) as temp:
-            completed = subprocess.run(
-                command, capture_output=True, text=True, encoding="utf-8", errors="replace",
-                timeout=self.timeout, cwd=temp,
-            )
+            try:
+                completed = subprocess.run(
+                    command, capture_output=True, text=True, encoding="utf-8", errors="replace",
+                    timeout=self.timeout, cwd=temp,
+                )
+            except subprocess.TimeoutExpired as exc:
+                raise RuntimeError(f"Claude CLI timed out after {self.timeout} seconds") from exc
         try:
             envelope = json.loads(completed.stdout)
         except json.JSONDecodeError as exc:
-            raise RuntimeError(f"Claude CLI returned invalid JSON ({completed.returncode}): {completed.stderr[-500:]}") from exc
-        if envelope.get("is_error") or envelope.get("permission_denials"):
-            raise RuntimeError(
-                f"Claude CLI decision failed: subtype={envelope.get('subtype')}, "
-                f"is_error={envelope.get('is_error')}, denials={envelope.get('permission_denials')}, "
-                f"exit={completed.returncode}, reason={envelope.get('terminal_reason')}, "
-                f"message={str(envelope.get('result') or envelope.get('errors'))[:300]}"
-            )
+            raise RuntimeError(f"Claude CLI returned invalid JSON (exit={completed.returncode})") from exc
+        if envelope.get("permission_denials"):
+            raise RuntimeError("Claude CLI attempted a disabled tool")
+        if envelope.get("is_error"):
+            code = re.search(r"API Error:\s*(\d{3})", str(envelope.get("result", "")))
+            raise RuntimeError(f"Claude CLI failed (exit={completed.returncode}, api_status={code.group(1) if code else 'unknown'})")
         self.actual_models.update(envelope.get("modelUsage", {}).keys())
         action = envelope.get("structured_output")
         if action is None:
             if completed.returncode != 0:
-                raise RuntimeError(f"Claude CLI failed ({completed.returncode}): {completed.stderr[-500:]}")
+                raise RuntimeError(f"Claude CLI failed (exit={completed.returncode})")
             action = json.loads(envelope["result"])
         return action
 

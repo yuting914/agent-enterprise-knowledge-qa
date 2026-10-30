@@ -41,4 +41,4 @@ python -m src.cli --question "企业账号密码忘了怎么办？" --backend mo
 
 输出 JSON 含 `answer`、`citations`（文档 ID、版本日期、逐字片段）、`gaps`、`status`、`trace` 和 `run_info`。Trace 每步记录动作、参数、工具观察、下一动作及简短公开依据。状态包括 `answered`、`needs_clarification`、`insufficient_evidence`、`tool_error`、`incomplete_limit` 和 `model_error`。
 
-真实模型每一步只生成一个结构化动作；Python 执行业务工具并把结果送回模型。程序会拒绝未读取文档的引用、非逐字引用、未检索就结束、空白追问。默认最多执行 8 步，可配置值强制限定在 1–20；达到上限明确返回 `incomplete_limit`。离线 Mock 是确定性规则，仅用于验证流程，不能证明真实模型的 ReAct 决策能力。当前真实模型额度不足对验收的影响见评估文档。
+真实模型每一步只生成一个结构化动作；Python 执行业务工具并把结果送回模型。程序会拒绝未读取文档的引用、非逐字引用、未检索就结束、空白追问。默认最多执行 8 步，可配置值强制限定在 1–20；达到上限明确返回 `incomplete_limit`。离线 Mock 是确定性规则，仅用于验证流程，不能证明真实模型的 ReAct 决策能力。六组真实模型运行结果及限制见评估文档。

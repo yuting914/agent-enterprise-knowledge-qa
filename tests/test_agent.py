@@ -2,9 +2,11 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from subprocess import CompletedProcess, TimeoutExpired
+from unittest.mock import patch
 
 from src.agent import KnowledgeAgent
-from src.model import MockDecisionModel
+from src.model import ClaudeDecisionModel, MockDecisionModel
 from src.tools import KnowledgeBase
 
 
@@ -115,6 +117,28 @@ class AgentTests(unittest.TestCase):
         self.assertEqual(result["status"], "answered")
         self.assertIn("直属主管", result["answer"])
         self.assertEqual(result["citations"][0]["doc_id"], "D04")
+
+    def test_model_timeout_does_not_echo_question(self):
+        model = ClaudeDecisionModel.__new__(ClaudeDecisionModel)
+        model.model, model.timeout, model.actual_models = "test", 1, set()
+        with patch("src.model.subprocess.run", side_effect=TimeoutExpired(["claude", "secret question"], 1)):
+            with self.assertRaises(RuntimeError) as caught:
+                model.decide({"question": "secret question", "events": []})
+        self.assertIn("timed out", str(caught.exception))
+        self.assertNotIn("secret question", str(caught.exception))
+
+    def test_model_api_error_does_not_echo_question(self):
+        model = ClaudeDecisionModel.__new__(ClaudeDecisionModel)
+        model.model, model.timeout, model.actual_models = "test", 1, set()
+        response = CompletedProcess(["claude"], 1, stdout=json.dumps({
+            "is_error": True, "permission_denials": [],
+            "result": "API Error: 402 secret question",
+        }), stderr="")
+        with patch("src.model.subprocess.run", return_value=response):
+            with self.assertRaises(RuntimeError) as caught:
+                model.decide({"question": "secret question", "events": []})
+        self.assertIn("api_status=402", str(caught.exception))
+        self.assertNotIn("secret question", str(caught.exception))
 
 
 if __name__ == "__main__":
